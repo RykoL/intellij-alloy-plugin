@@ -2,6 +2,10 @@
 <idea-plugin>
     <id>de.rlang.alloy</id>
     <name>Alloy</name>
+    <description>
+        Provides simple syntax highlighting for the grafana alloy configuration language.
+        The plugin is work in progress and is subject to change.
+    </description>
     <vendor>rykol</vendor>
     <depends>com.intellij.modules.platform</depends>
 
