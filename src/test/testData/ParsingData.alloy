@@ -1,0 +1,119 @@
+// ####################################
+// #### Base Metrics Configuration ####
+// ####################################
+declare "scrape_os" {
+	prometheus.exporter.unix "os" { }
+
+	prometheus.scrape "os" {
+		targets    = prometheus.exporter.unix.os.targets
+		forward_to = argument.forward_to.value
+	}
+}
+
+declare "send_metrics" {
+	prometheus.relabel "global_labels" {
+		forward_to = [prometheus.remote_write.metrics_service.receiver]
+
+		rule {
+			foo          = 3
+			target_label = "instance"
+			// Alloy container needs environment variable. Otherwise the
+			// the instance name is empty.
+			replacement = sys.env("HOSTNAME")
+		}
+
+		rule {
+			target_label = "environment"
+			// Alloy container needs environment variable. Otherwise the
+			// the environment name is empty.
+			replacement = sys.env("ENVIRONMENT")
+		}
+
+		rule {
+			target_label = "stack"
+			// Alloy container needs stack variable. Otherwise the
+			// the stack name is empty.
+			replacement = sys.env("STACK")
+		}
+	}
+
+	prometheus.remote_write "metrics_service" {
+		endpoint {
+			url = sys.env("ALLOY_PROMETHEUS_WRITE_API_URL")
+
+			basic_auth {
+				username = sys.env("ALLOY_PROMETHEUS_WRITE_API_USER")
+				password = sys.env("ALLOY_PROMETHEUS_WRITE_API_PASSWORD")
+			}
+		}
+	}
+
+	export "receiver" {
+		value = prometheus.relabel.global_labels.receiver
+	}
+}
+
+declare "scrape_containers" {
+	// Custom component to automatically retrieve scrape targets
+	// from docker.sock .
+
+	argument "forward_to" {
+		optional = false
+	}
+
+	// Retrieve all docker containers on the host
+	discovery.docker "containers" {
+		host = "unix:///var/run/docker.sock"
+	}
+
+	discovery.relabel "containers" {
+		targets = discovery.docker.containers.targets
+
+		// Keep only containers that have the label
+		// de.fit-connect.auto_scrape set to true
+		rule {
+			action        = "keep"
+			regex         = "true"
+			source_labels = ["__meta_docker_container_label_de_fit_connect_auto_scrape"]
+		}
+
+		// Containers can reside in multiple networks and will be
+		// listed once for every network. To only get one functioning
+		// scrape target for each container we only consider
+		// those in the monitoring network
+		rule {
+			action        = "keep"
+			source_labels = ["__meta_docker_network_label_com_docker_compose_network"]
+			regex         = "monitoring"
+		}
+
+		// If the container has a 'de.fit-connect.scrape.metrics_path'
+		// label set the '__metrics_path__' special label on the target
+		rule {
+			action        = "replace"
+			source_labels = ["__meta_docker_container_label_de_fit_connect_scrape_metrics_path"]
+			target_label  = "__metrics_path__"
+		}
+
+		// Containers will also be listed once for every port they expose.
+		// This keeps all targets whose container private port equals the
+		// port in the 'de.fit-connect.scrape.port' label.
+		rule {
+			action        = "keepequal"
+			source_labels = ["__meta_docker_port_private"]
+			target_label  = "__meta_docker_container_label_de_fit_connect_scrape_port"
+		}
+
+		// Set container_name based on their docker-compose service name
+		rule {
+			source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+			target_label  = "container_name"
+			action        = "replace"
+		}
+	}
+
+	prometheus.scrape "containers" {
+		targets    = discovery.relabel.containers.output
+		forward_to = argument.forward_to.value
+	}
+}
