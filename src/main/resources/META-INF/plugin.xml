@@ -24,6 +24,9 @@
                 language="Alloy"
                 implementationClass="de.rlang.intellij.alloy.syntax.AlloyHighlighterFactory"/>
         <annotator language="Alloy" implementationClass="de.rlang.intellij.alloy.syntax.AttributeAnnotator"/>
+        <lang.formatter
+                language="Alloy"
+                implementationClass="de.rlang.intellij.alloy.formatter.AlloyFormatterModelBuilder"/>
     </extensions>
 
 </idea-plugin>
