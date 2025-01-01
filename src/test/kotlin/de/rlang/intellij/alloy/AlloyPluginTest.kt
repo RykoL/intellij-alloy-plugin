@@ -11,17 +11,6 @@ import junit.framework.TestCase
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
 class AlloyPluginTest : ParsingTestCase("", "alloy", AlloyParserDefinition()) {
 
-    /*fun `test loads alloy file`() {
-        val psiFile = myFixture.configureByFile("ParsingData.alloy")
-        assertInstanceOf(psiFile, AlloyFile::class.java)
-    }
-
-    fun `test correctly parses literal expressions`() {
-        val psi = myFixture.configureByText(AlloyFileType.INSTANCE, "foo = 3")
-
-        assertNotNull(psi)
-    }*/
-
     fun testParsingData() {
         doTest(true)
     }
