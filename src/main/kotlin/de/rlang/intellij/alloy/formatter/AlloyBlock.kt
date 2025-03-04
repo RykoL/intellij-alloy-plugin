@@ -2,7 +2,10 @@ package de.rlang.intellij.alloy.formatter
 
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
+import com.intellij.lang.FileASTNode
+import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
+import de.rlang.intellij.alloy.AlloyTypes
 
 class AlloyBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val spacingBuilder: SpacingBuilder) :
     AbstractBlock(node, wrap, alignment) {
@@ -11,7 +14,15 @@ class AlloyBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val 
     }
 
     override fun getIndent(): Indent? {
-        return Indent.getNormalIndent()
+
+        if (node.treeParent is FileASTNode) {
+            return Indent.getNoneIndent()
+        }
+
+        if (node.treeParent.elementType == AlloyTypes.BLOCK_BODY) {
+            return Indent.getNormalIndent()
+        }
+        return Indent.getNoneIndent()
     }
 
     override fun isLeaf(): Boolean {
@@ -23,7 +34,9 @@ class AlloyBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val 
         if (children.isEmpty()) return EMPTY
 
         return children.mapNotNull {
-            AlloyBlock(it, wrap, alignment, spacingBuilder)
+            if (it.elementType == TokenType.WHITE_SPACE) return@mapNotNull null
+
+            AlloyBlock(it, wrap, Alignment.createAlignment(), spacingBuilder)
         }.toMutableList()
     }
 }

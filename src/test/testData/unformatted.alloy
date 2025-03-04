@@ -1,4 +1,15 @@
-logging {
-level = "info"
-format  = "json"
+  // Sample comment
+//Another comment
+
+foo {
+foo = "bar"
+fooo {
+bar = "foo"
+x =  3 + 7
+}
+baaarar {
+foobar {
+y = 18
+}
+}
 }
