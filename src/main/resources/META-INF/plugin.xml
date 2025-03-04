@@ -27,6 +27,8 @@
         <lang.formatter
                 language="Alloy"
                 implementationClass="de.rlang.intellij.alloy.formatter.AlloyFormatterModelBuilder"/>
+        <langCodeStyleSettingsProvider
+                implementation="de.rlang.intellij.alloy.AlloyCodeStyleSettingsProvider"/>
     </extensions>
 
 </idea-plugin>
