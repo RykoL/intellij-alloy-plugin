@@ -39,7 +39,6 @@
         QUOTE = '"'
         OR = '||'
         AND = '&&'
-        CMP = "=="
 
         STRING="regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?"
         WHITE_SPACE = "regexp:(\s|\t)"
