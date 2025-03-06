@@ -13,6 +13,8 @@
 
     tokens = [
         LINE_COMMENT = "regexp://.*"
+        BLOCK_COMMENT = "regexp:/\*([^*]|\*[^/])*\*?(\*/)?"
+
         NUMBER = "regexp:[+-]?(\d*[.])?\d+"
         FALSE = 'false'
         TRUE = 'true'

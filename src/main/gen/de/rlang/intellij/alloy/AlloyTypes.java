@@ -41,6 +41,7 @@ public interface AlloyTypes {
 
   IElementType AND = new AlloyTokenType("&&");
   IElementType ASSIGN = new AlloyTokenType("=");
+  IElementType BLOCK_COMMENT = new AlloyTokenType("BLOCK_COMMENT");
   IElementType CMP = new AlloyTokenType("==");
   IElementType COMMA = new AlloyTokenType(",");
   IElementType DIV = new AlloyTokenType("/");

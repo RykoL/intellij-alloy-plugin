@@ -22,7 +22,7 @@ class AlloySyntaxHighlighter : SyntaxHighlighterBase() {
             AlloyTypes.NUMBER -> pack(ALLOY_NUMBER)
             AlloyTypes.L_BRACE, AlloyTypes.R_BRACE -> pack(ALLOY_BRACE)
             AlloyTypes.L_BRACKET, AlloyTypes.R_BRACKET -> pack(ALLOY_BRACKETS)
-            AlloyTypes.LINE_COMMENT -> pack(ALLOY_LINE_COMMENT)
+            AlloyTypes.LINE_COMMENT, AlloyTypes.BLOCK_COMMENT -> pack(ALLOY_LINE_COMMENT)
             AlloyTypes.COMMA -> pack(ALLOY_COMMA)
             AlloyTypes.BLOCK_LABEL -> pack(ALLOY_BLOCK_IDENTIFIER)
             AlloyTypes.STRING -> pack(ALLOY_STRING)
