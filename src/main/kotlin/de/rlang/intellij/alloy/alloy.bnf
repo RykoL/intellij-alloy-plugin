@@ -13,6 +13,8 @@
 
     tokens = [
         LINE_COMMENT = "regexp://.*"
+        BLOCK_COMMENT = "regexp:/\*([^*]|\*[^/])*\*?(\*/)?"
+
         NUMBER = "regexp:[+-]?(\d*[.])?\d+"
         FALSE = 'false'
         TRUE = 'true'
@@ -37,7 +39,6 @@
         QUOTE = '"'
         OR = '||'
         AND = '&&'
-        CMP = "=="
 
         STRING="regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?"
         WHITE_SPACE = "regexp:(\s|\t)"
