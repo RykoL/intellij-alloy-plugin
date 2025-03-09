@@ -27,6 +27,9 @@
         <lang.formatter
                 language="Alloy"
                 implementationClass="de.rlang.intellij.alloy.formatter.AlloyFormatterModelBuilder"/>
+        <lang.commenter
+                language="Alloy"
+                implementationClass="de.rlang.intellij.alloy.editor.AlloyCommenter"/>
         <langCodeStyleSettingsProvider
                 implementation="de.rlang.intellij.alloy.AlloyCodeStyleSettingsProvider"/>
     </extensions>
