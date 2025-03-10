@@ -30,6 +30,9 @@
         <lang.commenter
                 language="Alloy"
                 implementationClass="de.rlang.intellij.alloy.editor.AlloyCommenter"/>
+        <lang.braceMatcher
+                language="Alloy"
+                implementationClass="de.rlang.intellij.alloy.codeinsight.AlloyBraceMatcher"/>
         <langCodeStyleSettingsProvider
                 implementation="de.rlang.intellij.alloy.AlloyCodeStyleSettingsProvider"/>
     </extensions>
