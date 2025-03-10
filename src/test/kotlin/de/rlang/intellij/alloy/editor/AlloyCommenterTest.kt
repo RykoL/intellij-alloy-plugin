@@ -5,89 +5,49 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
 class AlloyCommenterTest : BasePlatformTestCase() {
 
-    fun testLineCommenting() {
-        myFixture.configureByText(
-            "main.alloy", """
-                hello "world" {
-                    block {
-                        <caret>someVariable = "someValue"
-                    }
-                }
-            """.trimIndent()
-        )
+    fun `test line commenting`() {
+        myFixture.configureByText("main.alloy", "<caret>someVariable = \"someValue\"")
         myFixture.performEditorAction(IdeActions.ACTION_COMMENT_LINE)
-        myFixture.checkResult(
-            """
-                hello "world" {
-                    block {
-                        //someVariable = "someValue"
-                    }
-                }
-            """.trimIndent()
-        )
+        myFixture.checkResult("//someVariable = \"someValue\"")
     }
 
-    fun testLineUncommenting() {
-        myFixture.configureByText(
-            "main.alloy", """
-                hello "world" {
-                    block {
-                        //someVariable = <caret>"someValue"
-                    }
-                }
-            """.trimIndent()
-        )
+    fun `test line uncommenting`() {
+        myFixture.configureByText("main.alloy", "//someVariable = <caret>\"someValue\"")
         myFixture.performEditorAction(IdeActions.ACTION_COMMENT_LINE)
-        myFixture.checkResult(
-            """
-                hello "world" {
-                    block {
-                        someVariable = "someValue"
-                    }
-                }
-            """.trimIndent()
-        )
+        myFixture.checkResult("someVariable = \"someValue\"")
     }
 
-    fun testMultiLineCommenting() {
+    fun `test multi line commenting`() {
         myFixture.configureByText(
             "main.alloy", """
-                hello "world" {
-                    block {
-                        <selection>someVariable = "someValue"</selection>
-                    }
+                block {
+                    <selection>someVariable = "someValue"</selection>
                 }
             """.trimIndent()
         )
         myFixture.performEditorAction(IdeActions.ACTION_COMMENT_BLOCK)
         myFixture.checkResult(
             """
-                hello "world" {
-                    block {
-                        /*someVariable = "someValue"*/
-                    }
+                block {
+                    /*someVariable = "someValue"*/
                 }
             """.trimIndent()
         )
     }
 
-    fun testMultiLineUncommenting() {
+    fun `test multi line uncommenting`() {
         myFixture.configureByText(
             "main.alloy", """
-                hello "world" {
-                    block {
-                        <selection>/*someVariable = "someValue"*/</selection>
-                    }
+                block {
+                    <selection>/*someVariable = "someValue"*/</selection>
                 }
             """.trimIndent()
         )
         myFixture.performEditorAction(IdeActions.ACTION_COMMENT_BLOCK)
         myFixture.checkResult(
             """
-                hello "world" {
-                    block {
-                        someVariable = "someValue"
-                    }
+                block {
+                    someVariable = "someValue"
                 }
             """.trimIndent()
         )
