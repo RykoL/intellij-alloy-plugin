@@ -1,4 +1,4 @@
-package de.rlang.intellij.alloy
+package de.rlang.intellij.alloy.formatter
 
 import com.intellij.psi.formatter.FormatterTestCase
 
