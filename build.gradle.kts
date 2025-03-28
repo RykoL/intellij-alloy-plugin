@@ -1,9 +1,11 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java") // Java support
+    id("org.jetbrains.grammarkit") version "2022.3.2.2"
     alias(libs.plugins.kotlin) // Kotlin support
     alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
@@ -34,6 +36,9 @@ sourceSets {
         java {
             srcDirs("src/main/gen")
         }
+        kotlin {
+            srcDir("src/main/kotlin")
+        }
     }
 }
 
@@ -51,7 +56,6 @@ dependencies {
         // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file for plugin from JetBrains Marketplace.
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
 
-        instrumentationTools()
         pluginVerifier()
         zipSigner()
         testFramework(TestFrameworkType.Platform)
@@ -106,7 +110,8 @@ intellijPlatform {
         // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels = providers.gradleProperty("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
+        channels = providers.gradleProperty("pluginVersion")
+            .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
 
     pluginVerification {
@@ -141,7 +146,43 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
+
+    generateParser {
+        // source bnf file
+        sourceFile.set(project.layout.projectDirectory.file("src/main/kotlin/de/rlang/intellij/alloy/alloy.bnf"))
+
+        // optional, task-specific root for the generated files. Default: none
+        targetRootOutputDir.set(project.layout.projectDirectory.dir("src/main/gen"))
+
+        // path to a parser file, relative to the targetRoot
+        pathToParser.set("/de/rlang/intellij/parser/AlloyParser.java")
+
+        // path to a directory with generated psi files, relative to the targetRoot
+        pathToPsiRoot.set("/de/rlang/intellij/psi/")
+
+        // if set, the plugin will remove a parser output file and psi output directory before generating new ones. Default: false
+        purgeOldFiles.set(true)
+    }
+
+    generateLexer {
+        // source flex file
+        sourceFile.set(project.layout.projectDirectory.file("src/main/kotlin/de/rlang/intellij/alloy/alloy.flex"))
+
+        // target directory for lexer
+        targetOutputDir.set(project.layout.projectDirectory.dir("src/main/gen/de/rlang/intellij/alloy/lexer"))
+
+
+        // if set, plugin will remove a lexer output file before generating new one. Default: false
+        purgeOldFiles.set(true)
+        dependsOn(generateParser)
+    }
+
+    compileKotlin {
+        dependsOn(generateLexer)
+    }
+
 }
+
 
 intellijPlatformTesting {
     runIde {
