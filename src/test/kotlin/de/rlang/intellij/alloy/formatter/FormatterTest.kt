@@ -6,7 +6,7 @@ class FormatterTest : FormatterTestCase() {
     override fun getBasePath(): String = ""
     override fun getTestDataPath() = "src/test/testData/"
 
-    fun testFormatter() {
+    fun `test indents blocks with tabs instead of spaces`() {
         doTest("unformatted", "formatted")
     }
 

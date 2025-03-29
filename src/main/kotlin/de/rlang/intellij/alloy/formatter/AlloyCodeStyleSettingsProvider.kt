@@ -1,8 +1,9 @@
-package de.rlang.intellij.alloy
+package de.rlang.intellij.alloy.formatter
 
 import com.intellij.lang.Language
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
+import de.rlang.intellij.alloy.AlloyLanguage
 
 open class AlloyCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
     override fun getLanguage(): Language {
@@ -60,6 +61,7 @@ open class AlloyCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
         commonSettings: CommonCodeStyleSettings,
         indentOptions: CommonCodeStyleSettings.IndentOptions
     ) {
-        indentOptions.INDENT_SIZE = 2
+        indentOptions.USE_TAB_CHARACTER = true
+        indentOptions.INDENT_SIZE = 4
     }
 }

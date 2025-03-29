@@ -46,7 +46,7 @@
                 language="Alloy"
                 implementationClass="de.rlang.intellij.alloy.codeinsight.AlloyBraceMatcher"/>
         <langCodeStyleSettingsProvider
-                implementation="de.rlang.intellij.alloy.AlloyCodeStyleSettingsProvider"/>
+                implementation="de.rlang.intellij.alloy.formatter.AlloyCodeStyleSettingsProvider"/>
     </extensions>
 
 </idea-plugin>
