@@ -63,5 +63,7 @@ open class AlloyCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
     ) {
         indentOptions.USE_TAB_CHARACTER = true
         indentOptions.INDENT_SIZE = 4
+        commonSettings.LINE_COMMENT_ADD_SPACE = true
+        commonSettings.LINE_COMMENT_ADD_SPACE_ON_REFORMAT = true
     }
 }
