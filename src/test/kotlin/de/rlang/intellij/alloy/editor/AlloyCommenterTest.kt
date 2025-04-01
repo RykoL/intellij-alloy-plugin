@@ -8,7 +8,7 @@ class AlloyCommenterTest : BasePlatformTestCase() {
     fun `test line commenting`() {
         myFixture.configureByText("main.alloy", "<caret>someVariable = \"someValue\"")
         myFixture.performEditorAction(IdeActions.ACTION_COMMENT_LINE)
-        myFixture.checkResult("//someVariable = \"someValue\"")
+        myFixture.checkResult("// someVariable = \"someValue\"")
     }
 
     fun `test line uncommenting`() {
