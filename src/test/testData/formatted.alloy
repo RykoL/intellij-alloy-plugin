@@ -2,14 +2,18 @@
 //Another comment
 
 foo {
+	// before comment
 	foo = "bar"
 	fooo {
 		bar = "foo"
+		// nested comment
 		x = 3 + 7
 	}
 	baaarar {
+		// middle comment
 		foobar {
 			y = 18
 		}
+		// after comment
 	}
 }

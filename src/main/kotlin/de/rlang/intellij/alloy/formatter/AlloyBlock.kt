@@ -3,8 +3,10 @@ package de.rlang.intellij.alloy.formatter
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.lang.FileASTNode
+import com.intellij.psi.PsiComment
 import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
+import com.intellij.psi.util.elementType
 import de.rlang.intellij.alloy.AlloyTypes
 
 class AlloyBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val spacingBuilder: SpacingBuilder) :
@@ -19,7 +21,11 @@ class AlloyBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val 
             return Indent.getNoneIndent()
         }
 
-        if (node.treeParent.elementType == AlloyTypes.BLOCK_BODY) {
+        if (node.elementType == AlloyTypes.LINE_COMMENT || node.elementType == AlloyTypes.BLOCK_COMMENT) {
+            return Indent.getNormalIndent()
+        }
+
+        if (node.treeParent != null && node.treeParent.elementType == AlloyTypes.BLOCK_BODY) {
             return Indent.getNormalIndent()
         }
         return Indent.getNoneIndent()

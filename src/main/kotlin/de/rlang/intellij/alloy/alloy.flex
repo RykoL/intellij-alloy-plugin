@@ -25,7 +25,7 @@ import static de.rlang.intellij.alloy.AlloyTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-LINE_COMMENT="//".*
+LINE_COMMENT=("//".*)
 BLOCK_COMMENT="/"\*([^*]|\*[^/])*\*?(\*"/")?
 NUMBER=[+-]?([0-9]*[.])?[0-9]+
 IDENTIFIER=[A-Za-z_][A-Za-z_0-9]*

@@ -12,7 +12,7 @@
     tokenTypeClass = "de.rlang.intellij.alloy.AlloyTokenType"
 
     tokens = [
-        LINE_COMMENT = "regexp://.*"
+        LINE_COMMENT = "regexp:(//.*)"
         BLOCK_COMMENT = "regexp:/\*([^*]|\*[^/])*\*?(\*/)?"
 
         NUMBER = "regexp:[+-]?(\d*[.])?\d+"
